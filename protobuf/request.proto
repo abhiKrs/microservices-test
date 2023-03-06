@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package sh.logfire;
+
+option go_package = "github.com/logfire";
+
+import "google/protobuf/timestamp.proto";
+
+service FlinkService {
+  rpc SubmitFilterRequest (FilterRequest) returns (stream FilterResponse) {}
+}
+
+enum SeverityLevel {
+  INFO = 0;
+  TRACE = 1;
+  DEBUG = 2;
+  WARNING = 3;
+  ERROR = 4;
+  FATAL = 5;
+}
+
+message DateTimeFilter {
+  google.protobuf.Timestamp startTimeStamp = 1;
+  google.protobuf.Timestamp endTimeStamp = 2;
+}
+
+message Source {
+  string sourceID = 1;
+  string topicName = 2;
+}
+
+message FieldBasedFilter {
+  enum Operator {
+    CONTAINS = 0;
+    DOES_NOT_CONTAIN = 1;
+    EQUALS = 2;
+    NOT_EQUALS = 3;
+  }
+
+  string fieldName = 1;
+  string fieldValue = 2;
+  Operator operator = 3;
+}
+
+message FilterRequest {
+  repeated SeverityLevel severityLevels = 1;
+  DateTimeFilter dateTimeFilter = 2;
+  repeated string searchQueries = 3;
+  string sqlQuery = 4;
+  repeated FieldBasedFilter fieldBasedFilters = 5;
+  repeated Source sources = 6;
+}
+
+message FilterResponse {
+  string jobID = 1;
+}

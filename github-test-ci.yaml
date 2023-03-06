@@ -1,0 +1,69 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.19
+
+    - name: Build
+      run: go build -v ./...
+
+    - name: Test
+      run: go test -v ./...
+      
+    - name: Build and Push Docker logfire/gowebapi:latest gowebapp/web-api
+      uses: abhiKrs/docker-build-push@v4
+      working-directory: gowebapp/web-api      
+      with:
+        image: logfire/gowebapi
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Build and Push Docker logfire/filter-sergowebapp/notificationvice:latest gowebapp/filter-service
+      uses: abhiKrs/docker-build-push@v4
+      working-directory: flink-filter-service/go-filter-service      
+      with:
+        image: logfire/filter-service
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Build and Push Docker logfire/livetail:latest gowebapp/livetail
+      uses: abhiKrs/docker-build-push@v4
+      working-directory: gowebapp/livetail       
+      with:
+        image: logfire/livetail
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Build and Push Docker logfire/notification:latest gowebapp/notification
+      uses: abhiKrs/docker-build-push@v4
+      working-directory: gowebapp/notification
+      with:
+        image: logfire/notification
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Setup SSH authentication
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock

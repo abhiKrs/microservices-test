@@ -1,0 +1,27 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: dummysource-deployment
+#   labels:
+#     app: dummy_source
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: dummy_source
+#   template:
+#     metadata:
+#       labels:
+#         app: dummy_source
+#       # annotations:
+#       #   dapr.io/enabled: "true"
+#       #   dapr.io/app-id: "dummy_source"
+#       #   dapr.io/app-port: "4000"
+#     spec:
+#       containers:
+#       - name: dummy-source
+#         image: logfire/dummy_source
+#         imagePullPolicy: Never
+#         ports:
+#         - name: http
+#           containerPort: 4000

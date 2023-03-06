@@ -1,0 +1,39 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: streamsource-deployment
+#   labels:
+#     app: stream_source
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: stream_source
+#   template:
+#     metadata:
+#       labels:
+#         app: stream_source
+#       # annotations:
+#       #   dapr.io/enabled: "true"
+#       #   dapr.io/app-id: "stream_source"
+#       #   dapr.io/app-port: "4000"
+#     spec:
+#       containers:
+#       - name: dummy-source
+#         image: logfire/stream_source
+#         imagePullPolicy: Never
+#         ports:
+#         - name: http
+#           containerPort: 4000
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: stream_source
+# spec:
+#   selector:
+#     app: stream_source
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: http
