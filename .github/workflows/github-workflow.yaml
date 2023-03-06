@@ -32,48 +32,48 @@ jobs:
       run: go test -v ./...
 
     - name: Build and Push Docker logfire/gowebapi:latest
-      uses: docker/build-push-action@v2
+      uses: abhiKrs/docker-build-push@v2
       with:
         context: gowebapp/web-api
         push: true
         tags: itshanifas/gowebapi:latest
         registry: docker.io
       env:
-        DOCKER_USERNAME: itshanifas
-        DOCKER_PASSWORD: dckr_pat_NqrQdGlMFVdqrwIsOTmm7p9dL8c
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build and Push Docker logfire/filter-service:latest
-      uses: docker/build-push-action@v2
-      with:
-        context: gowebapp/filter-service
-        push: true
-        tags: itshanifas/filter-service:latest
-        registry: docker.io
-      env:
-        DOCKER_USERNAME: itshanifas
-        DOCKER_PASSWORD: dckr_pat_NqrQdGlMFVdqrwIsOTmm7p9dL8c
+   # - name: Build and Push Docker logfire/filter-service:latest
+    #  uses: docker/build-push-action@v2
+     # with:
+      #  context: gowebapp/filter-service
+       # push: true
+        #tags: itshanifas/filter-service:latest
+       # registry: docker.io
+     # env:
+      #  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+       # DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build and Push Docker logfire/livetail:latest
-      uses: docker/build-push-action@v2
-      with:
-        context: gowebapp/livetail
-        push: true
-        tags: itshanifas/livetail:latest
-        registry: docker.io
-      env:
-        DOCKER_USERNAME: itshanifas
-        DOCKER_PASSWORD: dckr_pat_NqrQdGlMFVdqrwIsOTmm7p9dL8c
+    #- name: Build and Push Docker logfire/livetail:latestdocker/build-push-action@v2
+     # uses: docker/build-push-action@v2
+     # with:
+      #  context: gowebapp/livetail
+       # push: true
+       # tags: itshanifas/livetail:latest
+       # registry: docker.io
+     # env:
+      #  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+       # DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build and Push Docker logfire/notification:latest
-      uses: docker/build-push-action@v2
-      with:
-        context: gowebapp/notification
-        push: true
-        tags: itshanifas/notification:latest
-        registry: docker.io
-      env:
-        DOCKER_USERNAME: itshanifas
-        DOCKER_PASSWORD: dckr_pat_NqrQdGlMFVdqrwIsOTmm7p9dL8c
+   # - name: Build and Push Docker logfire/notification:latest
+    #  uses: docker/build-push-action@v2
+    #  with:
+     #   context: gowebapp/notification
+     #   push: true
+      #  tags: itshanifas/notification:latest
+       # registry: docker.io
+     # env:
+       # DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      #  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Setup SSH authentication
       run: |
