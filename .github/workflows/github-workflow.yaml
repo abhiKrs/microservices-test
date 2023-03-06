@@ -37,8 +37,7 @@ jobs:
       with:
         context: gowebapp/web-api
         push: true
-        tags: itshanifas/gowebapi:latest
-        registry: docker.io
+        registry: https://hub.docker.com/repository/docker/abhi1insphere/test-repo/general
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
